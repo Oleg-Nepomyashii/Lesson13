@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>Document</title>
+	</head>
+	<body>
+		<script>
+			
+			function Student(name, surname, bday,) {
+			this.name = name;
+			this.surname = surname;
+			this.birthsday = bday;
+			this.marks = new Array();
+			this.attendance = new Array(30);
+		};
+
+		Student.prototype.userYears = function() {
+			let currentDate = new Date();
+			let bday = new Date(this.birthsday);
+			let age = currentDate.getFullYear() - bday.getFullYear();
+			let month = currentDate.getMonth() - bday.getMonth();
+
+			if(month < 0 || (month === 0 && currentDate.getDate() < bday.getDate())) {
+				age--
+			}
+			return age;
+		};
+
+
+		Student.prototype.present = function () {
+			this.attendance.find((item , index) => {
+				if(item === undefined){
+					return this.attendance[index] = true
+				}
+			})
+	
+		};
+
+
+		Student.prototype.absent = function () {
+			this.attendance.find((item , index) => {
+				if(item === undefined) {
+					return this.attendance.splice(index,1 , false);	
+				}
+			})
+	
+		};
+
+
+		Student.prototype.mark = function(mark) {
+			if( this.marks.length < 30 && mark >= 0 && mark <= 10) {
+				this.marks.push(mark);
+			}
+		}
+
+		Student.prototype.middleMark = function() {
+			if(this.marks.length === 0) {
+				return 'нет оценок'
+			}
+
+			return this.marks.reduce((accum , item) => accum += item) / this.marks.length; 
+		}
+
+
+		Student.prototype.middleAttendance = function() {
+
+			let attendanceLength = this.attendance.filter(item => (item || !item)).length
+			if (attendanceLength === 0) {
+				return 'Вы не посетили еще ни одного занятия'
+			}
+
+			return this.attendance.filter(item => item).length / attendanceLength
+		}
+
+		Student.prototype.summary = function() {
+
+			if(this.middleMark() >= 9 && this.middleAttendance() >= 0.9) {
+				return 'Ути какой молодчинка!'
+			} 
+
+			else if(this.middleMark() < 9 && this.middleAttendance() < 0.9) {
+				return "Редиска!"
+			} 
+
+
+			else if((this.middleMark() < 9 || this.middleAttendance() < 0.9)) {
+				return "Норм, но можно лучше"
+			}
+
+		
+		}
+
+
+		const studentVasya = new Student('Vasya' , 'Ivanov' , '1995/08/19');
+
+		console.log(studentVasya);
+		console.log(studentVasya.userYears());
+		studentVasya.present();
+		studentVasya.present();
+		studentVasya.absent();
+		studentVasya.present();
+		studentVasya.absent();
+		studentVasya.present();
+		studentVasya.mark(10);
+		studentVasya.mark(10);
+		studentVasya.mark(8);
+		studentVasya.mark(9);
+		studentVasya.mark(7);
+		studentVasya.mark(10);
+		console.log(studentVasya.middleAttendance());
+		console.log(studentVasya.middleMark());
+		console.log(studentVasya.summary())
+
+
+
+
+		</script>
+		
+	</body>
+</html>
