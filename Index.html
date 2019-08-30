@@ -11,7 +11,7 @@
 			this.name = name;
 			this.surname = surname;
 			this.birthsday = bday;
-			this.marks = new Array();
+			this.marks = new Array(30);
 			this.attendance = new Array(30);
 		};
 
@@ -47,19 +47,22 @@
 	
 		};
 
-
 		Student.prototype.mark = function(mark) {
-			if( this.marks.length < 30 && mark >= 0 && mark <= 10) {
-				this.marks.push(mark);
-			}
+			this.marks.find((item , index) => {
+				if( item === undefined && mark >= 0 && mark <= 10) {
+					return this.marks.splice(index , 1 , mark)
+				}
+			})
 		}
 
 		Student.prototype.middleMark = function() {
-			if(this.marks.length === 0) {
+			let markLength = this.marks.filter(item => (item || 0))
+
+			if(markLength.length === 0) {
 				return 'нет оценок'
 			}
 
-			return this.marks.reduce((accum , item) => accum += item) / this.marks.length; 
+			return markLength.reduce((accum , item) => accum += item) / markLength.length; 
 		}
 
 
@@ -72,6 +75,8 @@
 
 			return this.attendance.filter(item => item).length / attendanceLength
 		}
+
+
 
 		Student.prototype.summary = function() {
 
@@ -97,16 +102,17 @@
 		console.log(studentVasya);
 		console.log(studentVasya.userYears());
 		studentVasya.present();
-		studentVasya.present();
+		studentVasya.present(); 
 		studentVasya.absent();
 		studentVasya.present();
-		studentVasya.absent();
 		studentVasya.present();
-		studentVasya.mark(10);
-		studentVasya.mark(10);
-		studentVasya.mark(8);
+		studentVasya.present();
+		studentVasya.present();
 		studentVasya.mark(9);
-		studentVasya.mark(7);
+		studentVasya.mark(9);
+		studentVasya.mark(9);
+		studentVasya.mark(9);
+		studentVasya.mark(9);
 		studentVasya.mark(10);
 		console.log(studentVasya.middleAttendance());
 		console.log(studentVasya.middleMark());
